@@ -1,0 +1,17 @@
+{
+  "name": "CA3C — Contrôle Technique",
+  "short_name": "CA3C",
+  "description": "Application de contrôle technique pour bureaux de contrôle — 594 points / 8 lots",
+  "start_url": "./app_ca3c_v4.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0D1B2A",
+  "theme_color": "#0D1B2A",
+  "orientation": "portrait-primary",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ],
+  "categories": ["business", "productivity"],
+  "lang": "fr"
+}

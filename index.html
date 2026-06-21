@@ -1,0 +1,1370 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CA3C — Contrôle Technique</title>
+<meta name="application-name" content="CA3C Contrôle">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="CA3C">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#0D1B2A">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap');
+
+  :root {
+    --bleu-nuit: #0D1B2A;
+    --bleu-acier: #1B3A5C;
+    --bleu-clair: #2E6DA4;
+    --accent: #E8A020;
+    --critique: #C0392B;
+    --majeure: #D35400;
+    --mineure: #27AE60;
+    --fond: #F5F7FA;
+    --blanc: #FFFFFF;
+    --gris-clair: #E8ECF1;
+    --gris-texte: #5A6478;
+    --texte: #1A2332;
+    --border: #CBD5E1;
+    --mono: 'Share Tech Mono', 'Courier New', monospace;
+    --sans: 'Avenir Next', 'Avenir', 'Nunito', -apple-system, sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--fond);
+    color: var(--texte);
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--bleu-nuit);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 2px solid var(--accent);
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .logo-badge {
+    background: var(--accent);
+    color: var(--bleu-nuit);
+    font-family: var(--mono);
+    font-weight: 600;
+    font-size: 13px;
+    padding: 4px 10px;
+    letter-spacing: 0.05em;
+  }
+
+  .logo-name {
+    color: var(--blanc);
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+
+  .header-tag {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: #5A7A9A;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* MAIN */
+  main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem;
+  }
+
+  /* ÉTAPES */
+  .etapes {
+    display: flex;
+    gap: 0;
+    margin-bottom: 2.5rem;
+    border: 1px solid var(--border);
+    background: var(--blanc);
+    overflow: hidden;
+    border-radius: 4px;
+  }
+
+  .etape {
+    flex: 1;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-right: 1px solid var(--border);
+    opacity: 0.4;
+    transition: opacity 0.3s;
+  }
+
+  .etape:last-child { border-right: none; }
+  .etape.active { opacity: 1; background: #EEF4FB; }
+  .etape.done { opacity: 0.7; }
+
+  .etape-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--bleu-clair);
+    background: #D6E8F7;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border-radius: 2px;
+  }
+
+  .etape.done .etape-num {
+    background: var(--mineure);
+    color: white;
+  }
+
+  .etape-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--bleu-nuit);
+    line-height: 1.3;
+  }
+
+  /* CARDS */
+  .card {
+    background: var(--blanc);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1.75rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .card-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--gris-texte);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .card-title::before {
+    content: '';
+    display: block;
+    width: 3px;
+    height: 16px;
+    background: var(--accent);
+    border-radius: 2px;
+  }
+
+  /* GRILLE CONFIG */
+  .config-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+  }
+
+  .field label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--gris-texte);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .field select,
+  .field input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    font-family: var(--sans);
+    font-size: 14px;
+    color: var(--texte);
+    background: var(--fond);
+    appearance: none;
+    cursor: pointer;
+    transition: border-color 0.2s;
+  }
+
+  .field select:focus,
+  .field input:focus {
+    outline: none;
+    border-color: var(--bleu-clair);
+    background: var(--blanc);
+  }
+
+  /* API KEY */
+  .apikey-zone {
+    display: flex;
+    gap: 10px;
+    align-items: flex-end;
+  }
+
+  .apikey-zone .field { flex: 1; }
+
+  .btn-secondary {
+    padding: 10px 16px;
+    background: var(--gris-clair);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--bleu-nuit);
+    cursor: pointer;
+    white-space: nowrap;
+    font-family: var(--sans);
+    transition: background 0.2s;
+  }
+
+  .btn-secondary:hover { background: var(--border); }
+
+  /* UPLOAD ZONE */
+  .upload-zone {
+    border: 2px dashed var(--border);
+    border-radius: 4px;
+    padding: 2.5rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: var(--fond);
+    position: relative;
+  }
+
+  .upload-zone:hover,
+  .upload-zone.dragover {
+    border-color: var(--bleu-clair);
+    background: #EEF4FB;
+  }
+
+  .upload-icon {
+    font-size: 2.5rem;
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .upload-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--bleu-nuit);
+    margin-bottom: 6px;
+  }
+
+  .upload-subtitle {
+    font-size: 13px;
+    color: var(--gris-texte);
+  }
+
+  .upload-formats {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 14px;
+  }
+
+  .format-badge {
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 3px 8px;
+    background: var(--gris-clair);
+    border: 1px solid var(--border);
+    color: var(--gris-texte);
+    border-radius: 2px;
+  }
+
+  .upload-zone input[type="file"] {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  .file-selected {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    background: #EEF4FB;
+    border: 1px solid var(--bleu-clair);
+    border-radius: 3px;
+    margin-top: 12px;
+  }
+
+  .file-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--bleu-clair);
+    font-family: var(--mono);
+  }
+
+  /* BTN ANALYSER */
+  .btn-analyser {
+    width: 100%;
+    padding: 15px;
+    background: var(--bleu-nuit);
+    color: var(--blanc);
+    border: none;
+    border-radius: 3px;
+    font-family: var(--sans);
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    letter-spacing: 0.03em;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    border-bottom: 3px solid var(--accent);
+  }
+
+  .btn-analyser:hover:not(:disabled) { background: var(--bleu-acier); }
+  .btn-analyser:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  /* LOADER */
+  .loader {
+    display: none;
+    text-align: center;
+    padding: 3rem;
+  }
+
+  .loader.visible { display: block; }
+
+  .loader-bar {
+    height: 3px;
+    background: var(--gris-clair);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+  }
+
+  .loader-bar-inner {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 2px;
+    animation: loading 2s ease-in-out infinite;
+  }
+
+  @keyframes loading {
+    0% { width: 0%; margin-left: 0; }
+    50% { width: 70%; margin-left: 15%; }
+    100% { width: 0%; margin-left: 100%; }
+  }
+
+  .loader-text {
+    font-size: 14px;
+    color: var(--gris-texte);
+    font-family: var(--mono);
+  }
+
+  /* RAPPORT */
+  .rapport { display: none; }
+  .rapport.visible { display: block; }
+
+  .rapport-header {
+    background: var(--bleu-nuit);
+    color: var(--blanc);
+    padding: 1.5rem 1.75rem;
+    border-radius: 4px 4px 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .rapport-title {
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  .rapport-meta {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: #8AAAC8;
+    margin-top: 4px;
+  }
+
+  .rapport-stats {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .stat-badge {
+    text-align: center;
+    padding: 8px 14px;
+    border-radius: 3px;
+  }
+
+  .stat-badge.critique { background: rgba(192,57,43,0.15); border: 1px solid rgba(192,57,43,0.3); }
+  .stat-badge.majeure { background: rgba(211,84,0,0.15); border: 1px solid rgba(211,84,0,0.3); }
+  .stat-badge.mineure { background: rgba(39,174,96,0.15); border: 1px solid rgba(39,174,96,0.3); }
+
+  .stat-num {
+    font-family: var(--mono);
+    font-size: 20px;
+    font-weight: 600;
+    display: block;
+  }
+
+  .stat-badge.critique .stat-num { color: #E74C3C; }
+  .stat-badge.majeure .stat-num { color: #E67E22; }
+  .stat-badge.mineure .stat-num { color: #2ECC71; }
+
+  .stat-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgba(255,255,255,0.6);
+    display: block;
+    margin-top: 2px;
+  }
+
+  /* RESERVES */
+  .reserves-list {
+    border: 1px solid var(--border);
+    border-top: none;
+    border-radius: 0 0 4px 4px;
+    overflow: hidden;
+  }
+
+  .reserve-item {
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid var(--gris-clair);
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 1rem;
+    align-items: start;
+    background: var(--blanc);
+    transition: background 0.15s;
+  }
+
+  .reserve-item:last-child { border-bottom: none; }
+  .reserve-item:hover { background: #FAFBFC; }
+
+  .reserve-severite {
+    padding: 4px 10px;
+    border-radius: 2px;
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+    margin-top: 2px;
+  }
+
+  .reserve-severite.CRITIQUE { background: #FDECEA; color: var(--critique); border: 1px solid rgba(192,57,43,0.2); }
+  .reserve-severite.MAJEURE { background: #FEF0E7; color: var(--majeure); border: 1px solid rgba(211,84,0,0.2); }
+  .reserve-severite.MINEURE { background: #EAFAF1; color: var(--mineure); border: 1px solid rgba(39,174,96,0.2); }
+
+  .reserve-corps { flex: 1; }
+
+  .reserve-point {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--bleu-nuit);
+    margin-bottom: 5px;
+  }
+
+  .reserve-observation {
+    font-size: 13px;
+    color: var(--gris-texte);
+    line-height: 1.6;
+  }
+
+  .reserve-norme {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--bleu-clair);
+    background: #EEF4FB;
+    padding: 3px 8px;
+    border-radius: 2px;
+    white-space: nowrap;
+    margin-top: 2px;
+  }
+
+  /* SECTION VIDE */
+  .rapport-vide {
+    padding: 3rem;
+    text-align: center;
+    background: var(--blanc);
+    border: 1px solid var(--border);
+    border-top: none;
+    border-radius: 0 0 4px 4px;
+  }
+
+  .rapport-vide-icon { font-size: 2.5rem; margin-bottom: 12px; }
+  .rapport-vide-titre { font-size: 16px; font-weight: 600; color: var(--mineure); margin-bottom: 6px; }
+  .rapport-vide-texte { font-size: 13px; color: var(--gris-texte); }
+
+  /* BTN EXPORT */
+  .btn-export {
+    margin-top: 1rem;
+    padding: 10px 20px;
+    background: var(--blanc);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--bleu-nuit);
+    cursor: pointer;
+    font-family: var(--sans);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s;
+  }
+
+  .btn-export:hover { background: var(--bleu-nuit); color: var(--blanc); }
+
+  /* ERREUR */
+  .erreur {
+    display: none;
+    padding: 14px 16px;
+    background: #FDECEA;
+    border: 1px solid rgba(192,57,43,0.3);
+    border-radius: 3px;
+    font-size: 13px;
+    color: var(--critique);
+    margin-top: 1rem;
+  }
+
+  .erreur.visible { display: block; }
+
+  /* RESPONSIVE */
+  @media (max-width: 600px) {
+    .config-grid { grid-template-columns: 1fr; }
+    .rapport-header { flex-direction: column; gap: 1rem; }
+    .etapes { flex-direction: column; }
+    .etape { border-right: none; border-bottom: 1px solid var(--border); }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <span class="logo-badge">CA3C</span>
+    <span class="logo-name">Contrôle Technique — Analyse automatique</span>
+  </div>
+  <div style="display:flex;align-items:center;gap:12px">
+    <span class="header-tag">Version 2.0</span>
+    <button id="btn-install" onclick="installerApp()" style="display:none;padding:6px 14px;background:var(--accent);color:var(--bleu-nuit);border:none;border-radius:3px;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--sans)">
+      ⬇ Installer
+    </button>
+  </div>
+</header>
+
+<main>
+
+  <!-- ÉTAPES -->
+  <div class="etapes">
+    <div class="etape active" id="etape-1">
+      <span class="etape-num">1</span>
+      <span class="etape-label">Configuration</span>
+    </div>
+    <div class="etape" id="etape-2">
+      <span class="etape-num">2</span>
+      <span class="etape-label">Dépôt document</span>
+    </div>
+    <div class="etape" id="etape-3">
+      <span class="etape-num">3</span>
+      <span class="etape-label">Analyse</span>
+    </div>
+    <div class="etape" id="etape-4">
+      <span class="etape-num">4</span>
+      <span class="etape-label">Rapport de réserves</span>
+    </div>
+  </div>
+
+  <!-- CONFIGURATION -->
+  <div class="card">
+    <div class="card-title">Configuration du contrôle</div>
+    <div class="config-grid">
+      <div class="field">
+        <label>Type de bâtiment</label>
+        <select id="type-batiment">
+          <option value="">— Sélectionner —</option>
+          <option value="habitation_1_2">Habitation 1re / 2e famille</option>
+          <option value="habitation_3">Habitation 3e famille</option>
+          <option value="habitation_4">Habitation 4e famille</option>
+          <option value="erp">ERP (Établissement Recevant du Public)</option>
+          <option value="igh">IGH (Immeuble de Grande Hauteur)</option>
+          <option value="industriel">Bâtiment industriel</option>
+          <option value="bureaux">Bureaux / Tertiaire</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Lot technique</label>
+        <select id="lot-technique">
+          <option value="">— Sélectionner —</option>
+          <option value="electricite">Électricité</option>
+          <option value="plomberie">Plomberie sanitaire</option>
+          <option value="cvc">CVC — Climatisation — VMC</option>
+          <option value="securite_incendie">Sécurité incendie</option>
+          <option value="courant_faible">Courant faible — Vidéosurveillance</option>
+          <option value="ascenseur">Ascenseur</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Type de document</label>
+        <select id="type-document">
+          <option value="">— Sélectionner —</option>
+          <option value="bilan_puissance">Bilan de puissance</option>
+          <option value="note_calcul">Note de calcul</option>
+          <option value="schema_unifilaire">Schéma unifilaire / TGBT</option>
+          <option value="plan_implantation">Plan d'implantation</option>
+          <option value="schema_coffret">Schéma de coffret</option>
+          <option value="plan_mise_terre">Plan de mise à la terre</option>
+          <option value="note_calcul_alim">Note de calcul alimentation</option>
+          <option value="note_calcul_evac">Note de calcul évacuation</option>
+          <option value="plan_alimentation">Plan d'alimentation</option>
+          <option value="plan_evacuation">Plan d'évacuation</option>
+          <option value="bilan_thermique">Bilan thermique</option>
+          <option value="note_calcul_vmc">Note de calcul VMC</option>
+          <option value="plan_cvc">Plan CVC</option>
+          <option value="fiche_technique">Fiche technique</option>
+          <option value="synoptique">Synoptique</option>
+          <option value="dossier_technique">Dossier technique</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Nom du projet</label>
+        <input type="text" id="nom-projet" placeholder="Ex : Immeuble Les Palmiers — Dakar">
+      </div>
+    </div>
+  </div>
+
+  <!-- CLÉ API -->
+  <div class="card">
+    <div class="card-title">Connexion API</div>
+    <div class="apikey-zone">
+      <div class="field">
+        <label>Clé API Anthropic</label>
+        <input type="password" id="api-key" placeholder="sk-ant-api03-...">
+      </div>
+      <button class="btn-secondary" onclick="sauvegarderCle()">Sauvegarder</button>
+    </div>
+    <p style="font-size:12px;color:var(--gris-texte);margin-top:10px;">
+      La clé est sauvegardée localement dans votre navigateur. Obtenez-en une sur <strong>console.anthropic.com</strong>
+    </p>
+  </div>
+
+  <!-- DÉPÔT DOCUMENT -->
+  <div class="card">
+    <div class="card-title">Document à analyser</div>
+    <div class="upload-zone" id="upload-zone"
+         ondragover="dragOver(event)"
+         ondragleave="dragLeave(event)"
+         ondrop="dropFichier(event)">
+      <input type="file" id="fichier-input" accept=".pdf,.xlsx,.xls,.png,.jpg,.jpeg"
+             onchange="fichierSelectionne(event)">
+      <span class="upload-icon">📄</span>
+      <div class="upload-title">Déposez votre document ici</div>
+      <div class="upload-subtitle">ou cliquez pour sélectionner un fichier</div>
+      <div class="upload-formats">
+        <span class="format-badge">PDF</span>
+        <span class="format-badge">XLSX</span>
+        <span class="format-badge">XLS</span>
+        <span class="format-badge">PNG</span>
+        <span class="format-badge">JPG</span>
+      </div>
+    </div>
+    <div class="file-selected" id="file-selected" style="display:none;">
+      <span>📎</span>
+      <span class="file-name" id="file-name"></span>
+      <span style="margin-left:auto;font-size:12px;color:var(--gris-texte)" id="file-size"></span>
+    </div>
+  </div>
+
+  <!-- BOUTON ANALYSER -->
+  <button class="btn-analyser" id="btn-analyser" onclick="lancerAnalyse()" disabled>
+    <span>🔍</span> Lancer l'analyse
+  </button>
+
+  <div class="erreur" id="erreur"></div>
+
+  <!-- LOADER -->
+  <div class="loader" id="loader">
+    <div class="loader-bar"><div class="loader-bar-inner"></div></div>
+    <div class="loader-text" id="loader-text">Lecture du document en cours...</div>
+  </div>
+
+  <!-- RAPPORT -->
+  <div class="rapport" id="rapport">
+    <div class="rapport-header">
+      <div>
+        <div class="rapport-title" id="rapport-title">Rapport de réserves</div>
+        <div class="rapport-meta" id="rapport-meta"></div>
+      </div>
+      <div class="rapport-stats">
+        <div class="stat-badge critique">
+          <span class="stat-num" id="count-critique">0</span>
+          <span class="stat-label">Critique</span>
+        </div>
+        <div class="stat-badge majeure">
+          <span class="stat-num" id="count-majeure">0</span>
+          <span class="stat-label">Majeure</span>
+        </div>
+        <div class="stat-badge mineure">
+          <span class="stat-num" id="count-mineure">0</span>
+          <span class="stat-label">Mineure</span>
+        </div>
+      </div>
+    </div>
+    <div class="reserves-list" id="reserves-list"></div>
+    <button class="btn-export" onclick="exporterRapport()">
+      ⬇ Exporter le rapport
+    </button>
+  </div>
+
+</main>
+
+<script>
+// ============================================================
+// MATRICE DE CONTRÔLE — LOT ÉLECTRICITÉ / BILAN DE PUISSANCE
+// ============================================================
+const MATRICE = {
+  electricite: {
+    bilan_puissance: [
+      {
+        point: "Coefficient d'extension justifié",
+        detection: "Chercher la ligne puissance totale foisonnée ou puissance appelée. Vérifier qu'un coefficient d'extension est appliqué et justifié (valeur recommandée 1,2). Si absent ou inférieur à 1,2 sans justification écrite, non-conformité avérée.",
+        severite: "MINEURE",
+        norme: "NFC 15-100 art. 312",
+        observation: "Préciser et justifier le coefficient d'extension appliqué au bilan des puissances. La valeur recommandée est 1,2 (20%) — toute valeur différente doit être justifiée par une note de calcul ou validée par le maître d'ouvrage."
+      },
+      {
+        point: "Coefficients de simultanéité justifiés",
+        detection: "Chercher le tableau des coefficients par type de circuit (éclairage, prises, forces, climatisation). Vérifier la cohérence avec la destination du bâtiment. Si absents, identiques pour tous les usages ou incohérents, non-conformité avérée.",
+        severite: "MAJEURE",
+        norme: "NFC 15-100",
+        observation: "Revoir les coefficients de simultanéité — les valeurs retenues doivent être cohérentes avec l'usage réel du bâtiment et justifiées dans le document."
+      },
+      {
+        point: "Unités cohérentes (W ou VA)",
+        detection: "Parcourir l'ensemble des colonnes de puissance. Si W et VA apparaissent simultanément sans conversion explicite, non-conformité avérée.",
+        severite: "MINEURE",
+        norme: "NFC 15-100",
+        observation: "Uniformiser les unités utilisées dans le bilan des puissances — utiliser soit les Watts (W) soit les Volt-Ampères (VA) de manière cohérente sur l'ensemble du document."
+      },
+      {
+        point: "Équipements de sécurité inclus (BAES, GE, pompes)",
+        detection: "Vérifier la présence explicite des lignes : BAES, groupe électrogène, pompe incendie, surpresseur, ascenseur, centrale incendie. L'absence d'une seule de ces lignes dans un bâtiment équipé constitue une non-conformité critique.",
+        severite: "CRITIQUE",
+        norme: "NFC 15-100 / IT 246",
+        observation: "Intégrer dans le bilan des puissances les équipements de sécurité : BAES, pompe incendie, surpresseur, ascenseur, centrale incendie. Ces équipements doivent figurer sur la source de secours."
+      },
+      {
+        point: "Puissance du groupe électrogène cohérente avec les charges de secours",
+        detection: "Additionner toutes les charges de sécurité et essentielles (BAES, pompes, ascenseur, éclairage sécurité, centrale incendie). Comparer au GE. Si puissance GE inférieure au total des charges essentielles, non-conformité critique.",
+        severite: "CRITIQUE",
+        norme: "NFC 15-100",
+        observation: "Revoir à la hausse la puissance du groupe électrogène — la puissance nominale doit couvrir l'ensemble des charges de sécurité et essentielles avec le coefficient d'extension applicable."
+      },
+      {
+        point: "Puissances coffrets divisionnaires = somme des départs",
+        detection: "Pour chaque coffret, additionner les puissances des départs et comparer au total affiché. Un écart supérieur à 5% sans explication constitue une non-conformité.",
+        severite: "MAJEURE",
+        norme: "NFC 15-100",
+        observation: "Écart constaté entre la somme des départs et la puissance totale du coffret — revoir le bilan et justifier tout écart par des réserves de capacité explicitement mentionnées."
+      },
+      {
+        point: "Facteur de puissance uniforme",
+        detection: "Relever toutes les valeurs de cos φ. Si plusieurs valeurs différentes sans justification par type d'équipement, non-conformité avérée.",
+        severite: "MINEURE",
+        norme: "NFC 15-100",
+        observation: "Uniformiser le facteur de puissance — une valeur unique doit être retenue dans les hypothèses, sauf si des valeurs différentes sont justifiées par type d'équipement."
+      },
+      {
+        point: "Chauffe-eaux et climatiseurs inclus",
+        detection: "Vérifier que pour chaque logement ou local, les lignes chauffe-eau et climatisation apparaissent dans le bilan. Croiser avec les plans d'architecture.",
+        severite: "MAJEURE",
+        norme: "NFC 15-100",
+        observation: "Prévoir dans le bilan des puissances les alimentations des chauffe-eaux électriques et des unités de climatisation pour chaque logement ou local concerné."
+      }
+    ],
+    note_calcul: [
+      {
+        point: "Longueurs de câbles renseignées",
+        detection: "Vérifier que chaque ligne de la note de calcul comporte une colonne longueur renseignée en mètres, depuis le tableau jusqu'au circuit terminal. Si des longueurs sont absentes ou estimées sans justification, non-conformité avérée.",
+        severite: "MAJEURE",
+        norme: "NFC 15-100",
+        observation: "Fournir la note de calcul complète avec les longueurs réelles des câbles pour chaque départ jusqu'aux circuits terminaux — indispensables au calcul des chutes de tension."
+      },
+      {
+        point: "Sections de câbles justifiées",
+        detection: "Vérifier la cohérence entre section, courant d'emploi, longueur et mode de pose selon NFC 15-100 art. 523. Si section insuffisante ou aucun calcul fourni, non-conformité critique.",
+        severite: "CRITIQUE",
+        norme: "NFC 15-100 art. 523",
+        observation: "La section du câble retenue n'est pas justifiée par rapport au courant d'emploi, à la longueur et au mode de pose — fournir le calcul de justification pour chaque départ."
+      },
+      {
+        point: "Chutes de tension dans les limites selon type d'installation",
+        detection: "Identifier le type d'installation : Type A (BT direct réseau public) → 3% éclairage / 5% autres. Type B (depuis poste HTA/BT) → 6% éclairage / 8% autres. Si type non précisé, le demander. Non-conformité si valeurs dépassées ou non calculées jusqu'aux circuits terminaux.",
+        severite: "CRITIQUE",
+        norme: "NFC 15-100 art. 525",
+        observation: "Les chutes de tension dépassent les limites autorisées (Type A : 3%/5% — Type B : 6%/8%) — revoir les sections et fournir les notes de calcul complètes jusqu'aux circuits terminaux."
+      }
+    ]
+  }
+};
+
+// ============================================================
+// CONTEXTE TERRAIN CA3C
+// ============================================================
+const CA3C_CONTEXTE = {
+  electricite: `
+CONTEXTE TERRAIN CA3C — RÉSERVES RÉCURRENTES ÉLECTRICITÉ (380 observations réelles) :
+
+1. PRISE DE TERRE : Valeur mesurée souvent non satisfaisante (≤ 10 Ω GE, ≤ 100 Ω bâtiment). Piquets mal enfoncés (< 2m), regards de visite absents, ferraillage rarement mis à la terre avant coulage. Raccordement masses par scotch ou dominos — non conforme.
+
+2. COFFRETS & TABLEAUX : Schémas absents ou non à jour. Calibres surdimensionnés (ex. 4×160A pour câbles 4×16mm²) ou sous-dimensionnés. Sélectivité ampèremétrique et différentielle souvent non assurée. Code couleur câbles non respecté (vert-jaune utilisé comme phase).
+
+3. DDR : Absence DDR 30mA en amont des circuits terminaux. DDR manquants pour pompe relevage, surpresseur, ascenseurs, clim, centrale incendie. Max 8 circuits par DDR souvent dépassé.
+
+4. BAES : Couples parking non conformes (hauteurs 0,5m/1,8m non respectées). Sens évacuation incorrect. Alimentations BAES non matérialisées. Blocs non fonctionnels fréquents.
+
+5. GROUPE ÉLECTROGÈNE : GE non raccordé à la terre. Inverseur au sol (doit être fixé au mur). Bac à sable et extincteur CO2 absents. Synoptique général absent.
+
+6. DOCUMENTS EXÉCUTION : Plans PHASE DCE non mis à jour en EXE. Notes de calcul absentes. Schémas de recollement jamais fournis.
+
+7. DÉFAUTS ISOLEMENT : Défauts sur circuits clim (0,09 MΩ) et éclairage (0,00 MΩ). Essais DDR non réalisés avant réception.
+
+OBSERVATIONS SPÉCIFIQUES RÉCURRENTES :
+- Bilan puissance : coefficient extension absent ou ≠ 1,2 sans justification
+- Bilan puissance : équipements sécurité (BAES, GE, pompes) absents
+- Bilan puissance : puissance GE < somme charges essentielles
+- Note de calcul : longueurs câbles manquantes, sections non justifiées
+- Schéma TGBT : départs absents (ascenseur, surpresseur, pompe incendie)
+- Plan implantation : prise de terre et chemins de câbles non matérialisés
+`,
+  plomberie: `
+CONTEXTE TERRAIN CA3C — RÉSERVES RÉCURRENTES PLOMBERIE (232 observations réelles) :
+
+Canalisations sous-dimensionnées fréquentes. Surpresseur non conforme aux plans. Couple de pompes souvent absent. Tests de pression (10 bars, 60 min) rarement réalisés avant carrelage. Anti-bélier absent. Chutes EU/EV non ventilées en terrasse. Séparation EU/EV non assurée. Crapaudines EP absentes. Siphonage condensats clim avant EU absent. Évacuation terrasses/balcons omise sur plans.
+`,
+  cvc: `
+CONTEXTE TERRAIN CA3C — RÉSERVES RÉCURRENTES CVC (54 observations réelles) :
+
+Bilan thermique absent ou global sans détail par local. Puissances splits non uniformisées. Épreuves pression réseau frigorifique non réalisées. Isolation armaflex incomplète. Fuites condensats (siphon absent). Extracteurs 15m³/h au lieu de 30m³/h dans toilettes. Bouches non fonctionnelles. Interrupteurs horaires VMC absents.
+`,
+  securite_incendie: `
+CONTEXTE TERRAIN CA3C — RÉSERVES RÉCURRENTES SÉCURITÉ INCENDIE (68 observations réelles) :
+
+Détecteurs optiques dans parkings/cuisines (doivent être thermiques). Boucles détection/diffusion non dissociées. Temporisation alarme non configurée. Parkings souterrains non désenfumés. Locaux > 300m² sans désenfumage. Volets désenfumage mal positionnés. Extincteurs poudre dans établissements médicaux. Bac à sable GE absent.
+`,
+  courant_faible: `
+CONTEXTE TERRAIN CA3C — RÉSERVES RÉCURRENTES COURANT FAIBLE (21 observations réelles) :
+
+Fiches techniques caméras absentes. Capacité enregistreur non justifiée. Nature câbles non précisée. Départs dédiés sécurité absents (incendie, vidéo, contrôle accès regroupés). Prises TV non raccordées au coffret multimédia.
+`,
+  ascenseur: `
+CONTEXTE TERRAIN CA3C — RÉSERVES RÉCURRENTES ASCENSEUR (9 observations réelles) :
+
+Manœuvre pompiers absente. Rappel automatique coupure électrique non prévu. Grille ventilation gaine absente. Dénivellement entre seuils portes cabine/palières. Certificats de conformité composants absents. Contrat maintenance non souscrit.
+`
+};
+
+// ============================================================
+// VARIABLES GLOBALES
+// ============================================================
+let fichierActuel = null;
+let fichierBase64 = null;
+let fichierType = null;
+
+// ============================================================
+// INITIALISATION
+// ============================================================
+window.onload = () => {
+  const cleSauvegardee = localStorage.getItem('ca3c_api_key');
+  if (cleSauvegardee) {
+    document.getElementById('api-key').value = cleSauvegardee;
+  }
+  verifierFormulaire();
+
+  ['type-batiment', 'lot-technique', 'type-document'].forEach(id => {
+    document.getElementById(id).addEventListener('change', verifierFormulaire);
+  });
+};
+
+// ============================================================
+// SAUVEGARDE CLÉ API
+// ============================================================
+function sauvegarderCle() {
+  const cle = document.getElementById('api-key').value.trim();
+  if (cle) {
+    localStorage.setItem('ca3c_api_key', cle);
+    afficherErreur('Clé API sauvegardée avec succès.', false);
+    setTimeout(() => cacherErreur(), 2000);
+  }
+}
+
+// ============================================================
+// GESTION FICHIER
+// ============================================================
+function fichierSelectionne(event) {
+  const fichier = event.target.files[0];
+  if (fichier) traiterFichier(fichier);
+}
+
+function dragOver(event) {
+  event.preventDefault();
+  document.getElementById('upload-zone').classList.add('dragover');
+}
+
+function dragLeave(event) {
+  document.getElementById('upload-zone').classList.remove('dragover');
+}
+
+function dropFichier(event) {
+  event.preventDefault();
+  document.getElementById('upload-zone').classList.remove('dragover');
+  const fichier = event.dataTransfer.files[0];
+  if (fichier) traiterFichier(fichier);
+}
+
+function traiterFichier(fichier) {
+  fichierActuel = fichier;
+  fichierType = fichier.type;
+
+  const taille = (fichier.size / 1024).toFixed(0) + ' Ko';
+  document.getElementById('file-name').textContent = fichier.name;
+  document.getElementById('file-size').textContent = taille;
+  document.getElementById('file-selected').style.display = 'flex';
+
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    fichierBase64 = e.target.result.split(',')[1];
+    verifierFormulaire();
+  };
+  reader.readAsDataURL(fichier);
+
+  actualiserEtapes(2);
+}
+
+// ============================================================
+// VÉRIFICATION FORMULAIRE
+// ============================================================
+function verifierFormulaire() {
+  const typeBat = document.getElementById('type-batiment').value;
+  const lot = document.getElementById('lot-technique').value;
+  const typeDoc = document.getElementById('type-document').value;
+  const apiKey = document.getElementById('api-key').value.trim();
+  const fichierPret = fichierBase64 !== null;
+
+  const pret = typeBat && lot && typeDoc && apiKey && fichierPret;
+  document.getElementById('btn-analyser').disabled = !pret;
+
+  if (typeBat && lot && typeDoc) actualiserEtapes(2);
+}
+
+// ============================================================
+// ÉTAPES
+// ============================================================
+function actualiserEtapes(etapeActive) {
+  for (let i = 1; i <= 4; i++) {
+    const el = document.getElementById(`etape-${i}`);
+    el.classList.remove('active', 'done');
+    if (i < etapeActive) el.classList.add('done');
+    else if (i === etapeActive) el.classList.add('active');
+  }
+}
+
+// ============================================================
+// LANCER L'ANALYSE
+// ============================================================
+async function lancerAnalyse() {
+  const apiKey = document.getElementById('api-key').value.trim();
+  const lot = document.getElementById('lot-technique').value;
+  const typeDoc = document.getElementById('type-document').value;
+  const typeBat = document.getElementById('type-batiment').value;
+  const nomProjet = document.getElementById('nom-projet').value || 'Projet sans nom';
+
+  cacherErreur();
+  afficherLoader('Lecture du document en cours...');
+  actualiserEtapes(3);
+
+  // Construire la matrice pertinente
+  const matrice = obtenirMatrice(lot, typeDoc);
+
+  // Construire le prompt système
+  const contexteCA3C = CA3C_CONTEXTE[lot] || '';
+  
+  const systemPrompt = `Tu es un expert en contrôle technique de bâtiments pour le bureau de contrôle CA3C au Sénégal. 
+Tu analyses des documents techniques (bilans de puissance, notes de calcul, plans, schémas) et génères des réserves de contrôle.
+
+MATRICE DE CONTRÔLE À APPLIQUER :
+${JSON.stringify(matrice, null, 2)}
+
+${contexteCA3C}
+
+TYPE DE BÂTIMENT : ${typeBat}
+LOT : ${lot}
+TYPE DE DOCUMENT : ${typeDoc}
+
+INSTRUCTIONS :
+1. Lis attentivement le document fourni
+2. Pour chaque point de la matrice, vérifie s'il est conforme ou non-conforme
+3. Ne génère une réserve QUE si tu détectes une non-conformité réelle dans le document
+4. Si le document ne contient pas les informations nécessaires pour vérifier un point, signale-le comme "information manquante"
+5. Réponds UNIQUEMENT en JSON valide, sans texte avant ou après
+6. STYLE DES OBSERVATIONS : Court, direct, professionnel. Maximum 2 phrases. Exemple bon : "Coefficient d'extension absent — justifier la valeur retenue ou appliquer 1,2." Exemple mauvais : "Nous avons constaté que le coefficient d'extension ne figure pas dans le document fourni, ce qui constitue une non-conformité par rapport aux exigences de la norme NFC 15-100 article 312 qui stipule que..."
+7. L'observation doit dire QUOI corriger, pas expliquer pourquoi c'est une norme.
+
+FORMAT DE RÉPONSE JSON OBLIGATOIRE :
+{
+  "reserves": [
+    {
+      "point": "Nom du point de vérification",
+      "severite": "CRITIQUE" | "MAJEURE" | "MINEURE",
+      "norme": "Référence normative",
+      "observation": "Observation détaillée et précise basée sur ce que tu as lu dans le document",
+      "element_concerne": "Élément précis du document qui pose problème (ex: ligne 12, coffret RDC, etc.)"
+    }
+  ],
+  "points_conformes": ["liste des points vérifiés et conformes"],
+  "resume": "Résumé en 2-3 phrases de l'état général du document"
+}`;
+
+  try {
+    // Construire le contenu du message
+    let contenuMessage = [];
+
+    // Détecter le type de fichier
+    const estPDF = fichierActuel.type === 'application/pdf';
+    const estImage = fichierActuel.type.startsWith('image/');
+    const estExcel = fichierActuel.name.match(/\.(xlsx|xls)$/i);
+
+    if (estPDF) {
+      contenuMessage = [
+        {
+          type: "document",
+          source: {
+            type: "base64",
+            media_type: "application/pdf",
+            data: fichierBase64
+          }
+        },
+        {
+          type: "text",
+          text: `Analyse ce document de type "${typeDoc}" pour le lot "${lot}" d'un bâtiment de type "${typeBat}" du projet "${nomProjet}". Applique la matrice de contrôle et génère les réserves en JSON.`
+        }
+      ];
+    } else if (estImage) {
+      contenuMessage = [
+        {
+          type: "image",
+          source: {
+            type: "base64",
+            media_type: fichierActuel.type,
+            data: fichierBase64
+          }
+        },
+        {
+          type: "text",
+          text: `Analyse ce document de type "${typeDoc}" pour le lot "${lot}" d'un bâtiment de type "${typeBat}" du projet "${nomProjet}". Applique la matrice de contrôle et génère les réserves en JSON.`
+        }
+      ];
+    } else {
+      // Excel ou autre — envoyer en base64 comme document
+      contenuMessage = [
+        {
+          type: "text",
+          text: `Le fichier "${fichierActuel.name}" (${typeDoc}) a été fourni pour le lot "${lot}" d'un bâtiment "${typeBat}" du projet "${nomProjet}". 
+          
+Note : Ce fichier est un tableur Excel. Analyse les données suivantes extraites du fichier et applique la matrice de contrôle pour générer les réserves en JSON.
+
+Fichier : ${fichierActuel.name}
+Taille : ${(fichierActuel.size / 1024).toFixed(0)} Ko
+
+Génère les réserves probables pour un bilan de puissance de ce type de bâtiment en te basant sur les points de la matrice, en indiquant clairement que le fichier Excel nécessite une vérification manuelle pour certains points.`
+        }
+      ];
+    }
+
+    actualiserLoader('Analyse en cours par Claude AI...');
+
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 4000,
+        system: systemPrompt,
+        messages: [
+          { role: 'user', content: contenuMessage }
+        ]
+      })
+    });
+
+    if (!response.ok) {
+      const errData = await response.json();
+      throw new Error(errData.error?.message || `Erreur API: ${response.status}`);
+    }
+
+    const data = await response.json();
+    const texteReponse = data.content.map(b => b.text || '').join('');
+
+    // Parser la réponse JSON
+    let resultat;
+    try {
+      const jsonPropre = texteReponse.replace(/```json\n?|\n?```/g, '').trim();
+      resultat = JSON.parse(jsonPropre);
+    } catch (e) {
+      throw new Error('La réponse de Claude n\'est pas au format attendu. Réessayez.');
+    }
+
+    cacherLoader();
+    afficherRapport(resultat, nomProjet, lot, typeDoc, typeBat);
+    actualiserEtapes(4);
+
+  } catch (err) {
+    cacherLoader();
+    actualiserEtapes(2);
+    afficherErreur('Erreur : ' + err.message);
+  }
+}
+
+// ============================================================
+// OBTENIR MATRICE PERTINENTE
+// ============================================================
+function obtenirMatrice(lot, typeDoc) {
+  const clesDoc = {
+    'bilan_puissance': 'bilan_puissance',
+    'note_calcul': 'note_calcul',
+    'schema_unifilaire': 'schema_unifilaire',
+    'plan_implantation': 'plan_implantation',
+    'schema_coffret': 'schema_coffret',
+    'plan_mise_terre': 'plan_mise_terre'
+  };
+
+  const cle = clesDoc[typeDoc] || typeDoc;
+
+  if (MATRICE[lot] && MATRICE[lot][cle]) {
+    return MATRICE[lot][cle];
+  }
+
+  // Retourner tous les points du lot si type doc non trouvé
+  if (MATRICE[lot]) {
+    return Object.values(MATRICE[lot]).flat();
+  }
+
+  return [];
+}
+
+// ============================================================
+// AFFICHER RAPPORT
+// ============================================================
+function afficherRapport(resultat, projet, lot, typeDoc, typeBat) {
+  const reserves = resultat.reserves || [];
+  const conformes = resultat.points_conformes || [];
+  const resume = resultat.resume || '';
+
+  // Stats
+  const nbCritique = reserves.filter(r => r.severite === 'CRITIQUE').length;
+  const nbMajeure = reserves.filter(r => r.severite === 'MAJEURE').length;
+  const nbMineure = reserves.filter(r => r.severite === 'MINEURE').length;
+
+  document.getElementById('count-critique').textContent = nbCritique;
+  document.getElementById('count-majeure').textContent = nbMajeure;
+  document.getElementById('count-mineure').textContent = nbMineure;
+
+  // Titre
+  const lotsNoms = {
+    'electricite': 'Électricité',
+    'plomberie': 'Plomberie sanitaire',
+    'cvc': 'CVC',
+    'securite_incendie': 'Sécurité incendie',
+    'courant_faible': 'Courant faible',
+    'ascenseur': 'Ascenseur'
+  };
+
+  document.getElementById('rapport-title').textContent =
+    `Rapport — ${lotsNoms[lot] || lot} / ${typeDoc.replace(/_/g,' ')}`;
+  document.getElementById('rapport-meta').textContent =
+    `${projet} · ${typeBat} · ${new Date().toLocaleDateString('fr-FR')}`;
+
+  // Liste des réserves
+  const liste = document.getElementById('reserves-list');
+  liste.innerHTML = '';
+
+  if (reserves.length === 0) {
+    liste.innerHTML = `
+      <div class="rapport-vide">
+        <div class="rapport-vide-icon">✅</div>
+        <div class="rapport-vide-titre">Aucune réserve détectée</div>
+        <div class="rapport-vide-texte">${resume || 'Le document analysé est conforme aux points de contrôle vérifiés.'}</div>
+      </div>`;
+  } else {
+    // Trier : CRITIQUE d'abord, puis MAJEURE, puis MINEURE
+    const ordre = { CRITIQUE: 0, MAJEURE: 1, MINEURE: 2 };
+    reserves.sort((a, b) => (ordre[a.severite] || 3) - (ordre[b.severite] || 3));
+
+    // Résumé en haut si présent
+    if (resume) {
+      liste.innerHTML = `
+        <div style="padding:1rem 1.5rem;background:#F8F9FA;border-bottom:1px solid var(--gris-clair);font-size:13px;color:var(--gris-texte);line-height:1.6;">
+          <strong style="color:var(--bleu-nuit)">Synthèse :</strong> ${resume}
+        </div>`;
+    }
+
+    reserves.forEach(r => {
+      const item = document.createElement('div');
+      item.className = 'reserve-item';
+      item.innerHTML = `
+        <span class="reserve-severite ${r.severite}">${r.severite}</span>
+        <div class="reserve-corps">
+          <div class="reserve-point">${r.point}</div>
+          <div class="reserve-observation">${r.observation}${r.element_concerne ? `<br><span style="font-size:12px;color:var(--bleu-clair);margin-top:4px;display:block;">📍 ${r.element_concerne}</span>` : ''}</div>
+        </div>
+        <span class="reserve-norme">${r.norme || ''}</span>`;
+      liste.appendChild(item);
+    });
+  }
+
+  document.getElementById('rapport').classList.add('visible');
+  document.getElementById('rapport').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  // Sauvegarder pour export
+  window.dernierRapport = { resultat, projet, lot, typeDoc, typeBat };
+}
+
+// ============================================================
+// EXPORT RAPPORT
+// ============================================================
+function exporterRapport() {
+  if (!window.dernierRapport) return;
+  const { resultat, projet, lot, typeDoc } = window.dernierRapport;
+  const reserves = resultat.reserves || [];
+
+  let contenu = `RAPPORT DE RÉSERVES — CA3C\n`;
+  contenu += `${'='.repeat(60)}\n`;
+  contenu += `Projet : ${projet}\n`;
+  contenu += `Lot : ${lot} / ${typeDoc}\n`;
+  contenu += `Date : ${new Date().toLocaleDateString('fr-FR')}\n`;
+  contenu += `${'='.repeat(60)}\n\n`;
+
+  if (resultat.resume) {
+    contenu += `SYNTHÈSE :\n${resultat.resume}\n\n`;
+  }
+
+  contenu += `RÉSERVES (${reserves.length}) :\n${'─'.repeat(40)}\n\n`;
+
+  reserves.forEach((r, i) => {
+    contenu += `${i+1}. [${r.severite}] ${r.point}\n`;
+    contenu += `   Norme : ${r.norme || 'N/A'}\n`;
+    contenu += `   Observation : ${r.observation}\n`;
+    if (r.element_concerne) contenu += `   Élément : ${r.element_concerne}\n`;
+    contenu += '\n';
+  });
+
+  const blob = new Blob([contenu], { type: 'text/plain;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `Rapport_CA3C_${lot}_${new Date().toISOString().slice(0,10)}.txt`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// ============================================================
+// UTILITAIRES UI
+// ============================================================
+function afficherLoader(texte) {
+  document.getElementById('loader-text').textContent = texte;
+  document.getElementById('loader').classList.add('visible');
+  document.getElementById('rapport').classList.remove('visible');
+  document.getElementById('btn-analyser').disabled = true;
+}
+
+function actualiserLoader(texte) {
+  document.getElementById('loader-text').textContent = texte;
+}
+
+function cacherLoader() {
+  document.getElementById('loader').classList.remove('visible');
+  document.getElementById('btn-analyser').disabled = false;
+}
+
+function afficherErreur(message, estErreur = true) {
+  const el = document.getElementById('erreur');
+  el.textContent = message;
+  el.classList.add('visible');
+  if (!estErreur) {
+    el.style.background = '#EAFAF1';
+    el.style.color = '#27AE60';
+    el.style.borderColor = 'rgba(39,174,96,0.3)';
+  } else {
+    el.style.background = '#FDECEA';
+    el.style.color = 'var(--critique)';
+    el.style.borderColor = 'rgba(192,57,43,0.3)';
+  }
+}
+
+function cacherErreur() {
+  document.getElementById('erreur').classList.remove('visible');
+}
+
+// ============================================================
+// PWA — INSTALLATION
+// ============================================================
+let deferredPrompt = null;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  document.getElementById('btn-install').style.display = 'block';
+});
+
+function installerApp() {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then((choiceResult) => {
+      if (choiceResult.outcome === 'accepted') {
+        document.getElementById('btn-install').style.display = 'none';
+      }
+      deferredPrompt = null;
+    });
+  }
+}
+
+window.addEventListener('appinstalled', () => {
+  document.getElementById('btn-install').style.display = 'none';
+  deferredPrompt = null;
+});
+
+// Enregistrement Service Worker
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+  });
+}
+</script>
+</body>
+</html>
