@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ASSISTEC — Contrôle Technique</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="ASSISTEC">
+<meta name="theme-color" content="#0D1B2A">
+<link rel="manifest" href="manifest.json">
+<style>
+:root {
+  --nuit: #0D1B2A;
+  --acier: #1B3A5C;
+  --bleu: #2E6DA4;
+  --accent: #E8A020;
+  --rouge: #C0392B;
+  --orange: #D35400;
+  --vert: #27AE60;
+  --fond: #F0F4F8;
+  --blanc: #FFFFFF;
+  --gris: #E2E8F0;
+  --texte-gris: #5A6478;
+  --texte: #1A2332;
+  --border: #CBD5E1;
+  --r: 6px;
+  --shadow: 0 1px 3px rgba(0,0,0,0.08);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.10);
+  --mono: 'Courier New', monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, 'Segoe UI', sans-serif; background: var(--fond); color: var(--texte); min-height: 100vh; }
+
+header {
+  background: var(--nuit); padding: 0 1.5rem;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 60px; position: sticky; top: 0; z-index: 200;
+  border-bottom: 3px solid var(--accent);
+}
+.logo { display: flex; align-items: center; gap: 12px; }
+.logo-badge { background: var(--accent); color: var(--nuit); font-family: var(--mono); font-weight: 700; font-size: 13px; padding: 5px 12px; border-radius: 3px; }
+.logo-name { color: #fff; font-size: 14px; font-weight: 600; }
+.logo-sub { color: #5A7A9A; font-size: 11px; font-family: var(--mono); }
+.version-tag { font-family: var(--mono); font-size: 10px; color: #4A6A8A; border: 1px solid #2A4A6A; padding: 3px 8px; border-radius: 2px; }
+
+.tabs-wrapper { background: var(--acier); overflow-x: auto; scrollbar-width: none; border-bottom: 1px solid rgba(255,255,255,0.1); }
+.tabs-wrapper::-webkit-scrollbar { display: none; }
+.tabs { display: flex; min-width: max-content; padding: 0 1.5rem; }
+.tab { padding: 12px 16px; color: rgba(255,255,255,0.5); font-size: 12px; font-weight: 600; cursor: pointer; border-bottom: 3px solid transparent; transition: all 0.2s; white-space: nowrap; display: flex; align-items: center; gap: 6px; user-select: none; }
+.tab:hover { color: rgba(255,255,255,0.8); }
+.tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+.tab-count { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.6); font-size: 10px; font-family: var(--mono); padding: 1px 6px; border-radius: 10px; }
+.tab.active .tab-count { background: rgba(232,160,32,0.25); color: var(--accent); }
+
+main { max-width: 960px; margin: 0 auto; padding: 1.5rem; }
+
+.stat-banner { display: grid; grid-template-columns: repeat(4,1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; margin-bottom: 1.25rem; box-shadow: var(--shadow); }
+.stat-box { background: var(--blanc); padding: 12px 16px; text-align: center; }
+.stat-num { font-family: var(--mono); font-size: 22px; font-weight: 700; display: block; }
+.stat-lbl { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--texte-gris); margin-top: 2px; display: block; }
+.stat-box.t .stat-num { color: var(--bleu); }
+.stat-box.c .stat-num { color: var(--rouge); }
+.stat-box.m .stat-num { color: var(--orange); }
+.stat-box.mi .stat-num { color: var(--vert); }
+
+.card { background: var(--blanc); border: 1px solid var(--border); border-radius: var(--r); padding: 1.25rem; margin-bottom: 1rem; box-shadow: var(--shadow); }
+.card-title { font-size: 11px; font-weight: 700; color: var(--texte-gris); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1rem; display: flex; align-items: center; gap: 8px; }
+.card-title::before { content: ''; display: block; width: 3px; height: 14px; background: var(--accent); border-radius: 2px; }
+
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.field label { display: block; font-size: 11px; font-weight: 700; color: var(--texte-gris); margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.05em; }
+.field select, .field input { width: 100%; padding: 9px 12px; border: 1px solid var(--border); border-radius: 4px; font-size: 13px; color: var(--texte); background: var(--fond); appearance: none; transition: all 0.2s; font-family: inherit; }
+.field select:focus, .field input:focus { outline: none; border-color: var(--bleu); background: var(--blanc); box-shadow: 0 0 0 3px rgba(46,109,164,0.12); }
+
+.upload-zone { border: 2px dashed var(--border); border-radius: var(--r); padding: 2rem; text-align: center; cursor: pointer; transition: all 0.2s; background: var(--fond); position: relative; }
+.upload-zone:hover, .upload-zone.over { border-color: var(--bleu); background: #EEF4FB; }
+.upload-zone input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+.upload-icon { font-size: 2rem; margin-bottom: 8px; display: block; }
+.upload-title { font-size: 14px; font-weight: 700; color: var(--nuit); margin-bottom: 4px; }
+.upload-sub { font-size: 12px; color: var(--texte-gris); }
+.formats { display: flex; gap: 6px; justify-content: center; margin-top: 10px; flex-wrap: wrap; }
+.fmt { font-family: var(--mono); font-size: 10px; padding: 2px 7px; background: var(--gris); border: 1px solid var(--border); color: var(--texte-gris); border-radius: 2px; }
+.file-sel { display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: #EEF4FB; border: 1px solid var(--bleu); border-radius: 4px; margin-top: 10px; }
+.file-nm { font-size: 13px; font-weight: 600; color: var(--bleu); font-family: var(--mono); }
+
+.btn-analyser { width: 100%; padding: 15px; background: var(--nuit); color: var(--blanc); border: none; border-radius: var(--r); font-size: 15px; font-weight: 700; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; justify-content: center; gap: 10px; border-bottom: 3px solid var(--accent); box-shadow: var(--shadow-md); font-family: inherit; }
+.btn-analyser:hover:not(:disabled) { background: var(--acier); }
+.btn-analyser:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.loader { display: none; text-align: center; padding: 2.5rem; }
+.loader.on { display: block; }
+.loader-bar { height: 4px; background: var(--gris); border-radius: 2px; overflow: hidden; margin-bottom: 1rem; }
+.loader-inner { height: 100%; background: linear-gradient(90deg, var(--accent), var(--bleu)); border-radius: 2px; animation: ldg 1.8s ease-in-out infinite; }
+@keyframes ldg { 0%{width:0%;margin-left:0} 50%{width:65%;margin-left:15%} 100%{width:0%;margin-left:100%} }
+.loader-txt { font-size: 13px; color: var(--texte-gris); font-family: var(--mono); }
+
+.rapport { display: none; }
+.rapport.on { display: block; }
+.rapport-header { background: var(--nuit); color: var(--blanc); padding: 1.25rem; border-radius: var(--r) var(--r) 0 0; display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; }
+.rapport-title { font-size: 15px; font-weight: 700; }
+.rapport-meta { font-family: var(--mono); font-size: 11px; color: #8AAAC8; margin-top: 3px; }
+.rapport-stats { display: flex; gap: 8px; flex-shrink: 0; }
+.sbadge { text-align: center; padding: 7px 12px; border-radius: 4px; }
+.sbadge.c { background: rgba(192,57,43,0.15); border: 1px solid rgba(192,57,43,0.3); }
+.sbadge.m { background: rgba(211,84,0,0.15); border: 1px solid rgba(211,84,0,0.3); }
+.sbadge.mi { background: rgba(39,174,96,0.15); border: 1px solid rgba(39,174,96,0.3); }
+.sbadge-num { font-family: var(--mono); font-size: 18px; font-weight: 700; display: block; }
+.sbadge.c .sbadge-num { color: #E74C3C; }
+.sbadge.m .sbadge-num { color: #E67E22; }
+.sbadge.mi .sbadge-num { color: #2ECC71; }
+.sbadge-lbl { font-size: 9px; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.5); display: block; margin-top: 1px; }
+
+.filtres { background: var(--fond); border: 1px solid var(--border); border-top: none; padding: 8px 14px; display: flex; gap: 6px; flex-wrap: wrap; }
+.filtre { padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; font-family: var(--mono); cursor: pointer; border: 1px solid var(--border); background: var(--blanc); color: var(--texte-gris); transition: all 0.2s; }
+.filtre.fa { background: var(--nuit); color: #fff; border-color: var(--nuit); }
+.filtre.fc { background: #FDECEA; color: var(--rouge); border-color: rgba(192,57,43,0.4); }
+.filtre.fm { background: #FEF0E7; color: var(--orange); border-color: rgba(211,84,0,0.4); }
+.filtre.fmi { background: #EAFAF1; color: var(--vert); border-color: rgba(39,174,96,0.4); }
+
+.reserves-list { border: 1px solid var(--border); border-top: none; border-radius: 0 0 var(--r) var(--r); overflow: hidden; }
+.reserve { padding: 1rem 1.25rem; border-bottom: 1px solid var(--gris); display: grid; grid-template-columns: 80px 1fr auto; gap: 1rem; align-items: start; background: var(--blanc); }
+.reserve:last-child { border-bottom: none; }
+.reserve:hover { background: #FAFBFC; }
+.rsev { padding: 3px 7px; border-radius: 3px; font-family: var(--mono); font-size: 9px; font-weight: 700; letter-spacing: 0.1em; white-space: nowrap; }
+.rsev.CRITIQUE { background: #FDECEA; color: var(--rouge); border: 1px solid rgba(192,57,43,0.25); }
+.rsev.MAJEURE { background: #FEF0E7; color: var(--orange); border: 1px solid rgba(211,84,0,0.25); }
+.rsev.MINEURE { background: #EAFAF1; color: var(--vert); border: 1px solid rgba(39,174,96,0.25); }
+.rnum { font-family: var(--mono); font-size: 11px; color: var(--texte-gris); margin-top: 4px; }
+.rpoint { font-size: 13px; font-weight: 700; color: var(--nuit); margin-bottom: 4px; line-height: 1.4; }
+.robs { font-size: 12px; color: var(--texte-gris); line-height: 1.6; }
+.relem { font-size: 11px; color: var(--bleu); margin-top: 4px; }
+.rnorme { font-family: var(--mono); font-size: 10px; color: var(--bleu); background: #EEF4FB; padding: 2px 7px; border-radius: 3px; white-space: nowrap; align-self: start; }
+
+.synthese { padding: 12px 16px; background: #F8FAFC; border-bottom: 1px solid var(--gris); font-size: 13px; color: var(--texte-gris); line-height: 1.7; }
+
+.vide { padding: 2.5rem; text-align: center; background: var(--blanc); border: 1px solid var(--border); border-top: none; border-radius: 0 0 var(--r) var(--r); }
+.vide-icon { font-size: 2.5rem; margin-bottom: 10px; }
+.vide-titre { font-size: 15px; font-weight: 700; color: var(--vert); margin-bottom: 6px; }
+.vide-txt { font-size: 13px; color: var(--texte-gris); }
+
+.actions { margin-top: 1rem; display: flex; gap: 8px; flex-wrap: wrap; }
+.btn-exp { padding: 9px 16px; border-radius: var(--r); font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s; background: var(--blanc); border: 1px solid var(--border); color: var(--nuit); }
+.btn-exp:hover { background: var(--nuit); color: var(--blanc); }
+.btn-nouv { padding: 9px 16px; border-radius: var(--r); font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; background: var(--accent); border: none; color: var(--nuit); display: inline-flex; align-items: center; gap: 6px; }
+.btn-nouv:hover { opacity: 0.85; }
+
+.erreur { display: none; padding: 12px 14px; background: #FDECEA; border: 1px solid rgba(192,57,43,0.3); border-radius: var(--r); font-size: 13px; color: var(--rouge); margin-top: 1rem; }
+.erreur.on { display: block; }
+
+.ok-banner { background: #EAFAF1; border: 1px solid rgba(39,174,96,0.3); border-radius: var(--r); padding: 12px 16px; display: flex; align-items: center; gap: 10px; }
+.ok-banner-txt { font-size: 13px; font-weight: 700; color: #1E8449; }
+.ok-banner-sub { font-size: 12px; color: var(--texte-gris); margin-top: 2px; }
+
+footer { text-align: center; padding: 1.5rem; font-size: 11px; color: var(--texte-gris); border-top: 1px solid var(--border); margin-top: 1rem; }
+
+@media (max-width: 640px) {
+  .grid2 { grid-template-columns: 1fr; }
+  .rapport-header { flex-direction: column; }
+  .stat-banner { grid-template-columns: repeat(2,1fr); }
+  .reserve { grid-template-columns: 1fr; }
+  .rapport-stats { flex-wrap: wrap; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <span class="logo-badge">ASSISTEC</span>
+    <div>
+      <span class="logo-name">Contrôle Technique</span>
+      <span class="logo-sub"> — Analyse IA</span>
+    </div>
+  </div>
+  <span class="version-tag" id="vtag">v4.0 · 594 pts</span>
+</header>
+
+<div class="tabs-wrapper">
+  <div class="tabs" id="tabs">
+    <div class="tab active" data-lot="electricite" onclick="changerLot(this)">⚡ Electricite <span class="tab-count">210</span></div>
+    <div class="tab" data-lot="plomberie" onclick="changerLot(this)">🔧 Plomberie <span class="tab-count">64</span></div>
+    <div class="tab" data-lot="cvc" onclick="changerLot(this)">❄️ CVC <span class="tab-count">50</span></div>
+    <div class="tab" data-lot="securite_incendie" onclick="changerLot(this)">🔥 Sec. Incendie <span class="tab-count">128</span></div>
+    <div class="tab" data-lot="courant_faible" onclick="changerLot(this)">📷 Crt. Faible <span class="tab-count">47</span></div>
+    <div class="tab" data-lot="ascenseur" onclick="changerLot(this)">🛗 Ascenseur <span class="tab-count">38</span></div>
+    <div class="tab" data-lot="fd_c17205" onclick="changerLot(this)">🔌 FD C17-205 <span class="tab-count">37</span></div>
+    <div class="tab" data-lot="reception" onclick="changerLot(this)">✅ Reception <span class="tab-count">20</span></div>
+  </div>
+</div>
+
+<main>
+
+<div class="stat-banner">
+  <div class="stat-box t"><span class="stat-num" id="sb-t">594</span><span class="stat-lbl">Total</span></div>
+  <div class="stat-box c"><span class="stat-num" id="sb-c">340</span><span class="stat-lbl">Critiques</span></div>
+  <div class="stat-box m"><span class="stat-num" id="sb-m">233</span><span class="stat-lbl">Majeures</span></div>
+  <div class="stat-box mi"><span class="stat-num" id="sb-mi">21</span><span class="stat-lbl">Mineures</span></div>
+</div>
+
+<div class="card">
+  <div class="card-title">Configuration du controle</div>
+  <div class="grid2">
+    <div class="field">
+      <label>Type de batiment</label>
+      <select id="type-bat" onchange="check()">
+        <option value="">— Selectionner —</option>
+        <optgroup label="Habitation">
+          <option value="Habitation 1re/2e famille">Habitation 1re / 2e famille</option>
+          <option value="Habitation 3e famille A">Habitation 3e famille A</option>
+          <option value="Habitation 3e famille B">Habitation 3e famille B</option>
+          <option value="Habitation 4e famille">Habitation 4e famille</option>
+        </optgroup>
+        <optgroup label="ERP">
+          <option value="ERP Type W - Bureaux">ERP Type W (Bureaux)</option>
+          <option value="ERP Type O - Hotels">ERP Type O (Hotels)</option>
+          <option value="ERP Type N - Restaurants">ERP Type N (Restaurants)</option>
+          <option value="ERP Type L - Salles spectacle">ERP Type L (Salles spectacle)</option>
+          <option value="ERP Type M - Magasins">ERP Type M (Magasins)</option>
+          <option value="ERP Type R - Enseignement">ERP Type R (Enseignement)</option>
+          <option value="ERP Type U - Soins">ERP Type U (Soins)</option>
+          <option value="ERP Type J - Personnes agees">ERP Type J (Personnes agees)</option>
+          <option value="ERP autre type">ERP autre type</option>
+        </optgroup>
+        <optgroup label="IGH">
+          <option value="IGH GHA - Habitation">IGH GHA (Habitation)</option>
+          <option value="IGH GHB - Bureaux">IGH GHB (Bureaux)</option>
+          <option value="IGH GHO - Hotels">IGH GHO (Hotels)</option>
+          <option value="IGH GHU - Soins">IGH GHU (Soins)</option>
+        </optgroup>
+        <optgroup label="Autres">
+          <option value="Parc de stationnement couvert">Parc stationnement couvert</option>
+          <option value="Batiment industriel">Batiment industriel</option>
+          <option value="Bureaux tertiaire">Bureaux / Tertiaire</option>
+        </optgroup>
+      </select>
+    </div>
+    <div class="field">
+      <label>Type de document</label>
+      <select id="type-doc" onchange="check()">
+        <option value="">— Selectionner —</option>
+        <optgroup label="Electricite">
+          <option value="Bilan de puissance">Bilan de puissance</option>
+          <option value="Note de calcul electrique">Note de calcul electrique</option>
+          <option value="Schema unifilaire TGBT">Schema unifilaire / TGBT</option>
+          <option value="Plan implantation electrique">Plan implantation electrique</option>
+        </optgroup>
+        <optgroup label="Plomberie">
+          <option value="Note de calcul plomberie">Note de calcul plomberie</option>
+          <option value="Plan alimentation eau">Plan alimentation eau</option>
+          <option value="Plan evacuation EU EV EP">Plan evacuation EU/EV/EP</option>
+          <option value="Schema principe plomberie">Schema de principe plomberie</option>
+        </optgroup>
+        <optgroup label="CVC">
+          <option value="Bilan thermique">Bilan thermique</option>
+          <option value="Note de calcul VMC">Note de calcul VMC</option>
+          <option value="Note de calcul desenfumage">Note de calcul desenfumage</option>
+          <option value="Plan CVC">Plan CVC</option>
+        </optgroup>
+        <optgroup label="Securite incendie">
+          <option value="Notice de securite incendie">Notice de securite incendie</option>
+          <option value="Plan de detection incendie">Plan detection incendie</option>
+          <option value="Plan de desenfumage">Plan desenfumage</option>
+          <option value="Plan extinction RIA">Plan extinction / RIA</option>
+          <option value="Dossier SSI">Dossier SSI complet</option>
+        </optgroup>
+        <optgroup label="Courant faible">
+          <option value="Plan videosurveillance">Plan videosurveillance</option>
+          <option value="Plan controle acces">Plan controle acces</option>
+          <option value="Plan reseau LAN WiFi">Plan reseau LAN / WiFi</option>
+          <option value="Synoptique courant faible">Synoptique courant faible</option>
+        </optgroup>
+        <optgroup label="Ascenseur">
+          <option value="Dossier technique ascenseur">Dossier technique ascenseur</option>
+          <option value="Plan de gaine ascenseur">Plan de gaine</option>
+          <option value="Note de calcul ascenseur">Note de calcul trafic</option>
+        </optgroup>
+        <optgroup label="General">
+          <option value="Fiche technique equipement">Fiche technique equipement</option>
+          <option value="Dossier de reception">Dossier de reception</option>
+          <option value="Plan general">Plan general</option>
+        </optgroup>
+      </select>
+    </div>
+    <div class="field">
+      <label>Nom du projet</label>
+      <input type="text" id="projet" placeholder="Ex: Immeuble Les Palmiers - Dakar" oninput="check()">
+    </div>
+    <div class="field">
+      <label>Controleur</label>
+      <input type="text" id="controleur" placeholder="Ex: ASSISTEC - Ing. DIALLO">
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="ok-banner">
+    <span style="font-size:1.5rem">🔐</span>
+    <div>
+      <div class="ok-banner-txt">Connexion securisee active</div>
+      <div class="ok-banner-sub">La cle API est geree par le serveur ASSISTEC — aucune configuration requise.</div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-title">Document a analyser</div>
+  <div class="upload-zone" id="upload-zone"
+       ondragover="dragOn(event)" ondragleave="dragOff(event)" ondrop="drop(event)">
+    <input type="file" id="file-input" accept=".pdf,.xlsx,.xls,.png,.jpg,.jpeg,.webp" onchange="onFile(event)">
+    <span class="upload-icon">📄</span>
+    <div class="upload-title">Deposez votre document ici</div>
+    <div class="upload-sub">ou cliquez pour selectionner un fichier</div>
+    <div class="formats">
+      <span class="fmt">PDF</span><span class="fmt">XLSX</span><span class="fmt">PNG</span>
+      <span class="fmt">JPG</span><span class="fmt">WEBP</span>
+    </div>
+  </div>
+  <div class="file-sel" id="file-sel" style="display:none">
+    <span>📎</span>
+    <span class="file-nm" id="file-nm"></span>
+    <span style="margin-left:auto;font-size:12px;color:var(--texte-gris)" id="file-sz"></span>
+  </div>
+</div>
+
+<button class="btn-analyser" id="btn-analyser" onclick="lancer()" disabled>
+  🔍 Lancer l'analyse avec Claude AI
+</button>
+
+<div class="erreur" id="erreur"></div>
+
+<div class="loader" id="loader">
+  <div class="loader-bar"><div class="loader-inner"></div></div>
+  <div class="loader-txt" id="loader-txt">Preparation...</div>
+</div>
+
+<div class="rapport" id="rapport">
+  <div class="rapport-header">
+    <div>
+      <div class="rapport-title" id="r-title">Rapport de reserves</div>
+      <div class="rapport-meta" id="r-meta"></div>
+    </div>
+    <div class="rapport-stats">
+      <div class="sbadge c"><span class="sbadge-num" id="r-c">0</span><span class="sbadge-lbl">Critique</span></div>
+      <div class="sbadge m"><span class="sbadge-num" id="r-m">0</span><span class="sbadge-lbl">Majeure</span></div>
+      <div class="sbadge mi"><span class="sbadge-num" id="r-mi">0</span><span class="sbadge-lbl">Mineure</span></div>
+    </div>
+  </div>
+  <div class="filtres">
+    <button class="filtre fa" onclick="filtrer('tous')">TOUT</button>
+    <button class="filtre" onclick="filtrer('CRITIQUE')">CRITIQUE</button>
+    <button class="filtre" onclick="filtrer('MAJEURE')">MAJEURE</button>
+    <button class="filtre" onclick="filtrer('MINEURE')">MINEURE</button>
+  </div>
+  <div id="reserves-list"></div>
+  <div class="actions">
+    <button class="btn-exp" onclick="exporter('txt')">📄 Exporter TXT</button>
+    <button class="btn-exp" onclick="exporter('json')">{ } Exporter JSON</button>
+    <button class="btn-nouv" onclick="nouveau()">+ Nouvelle analyse</button>
+  </div>
+</div>
+
+</main>
+<footer>ASSISTEC — Controle Technique · v4.0 · Matrice V12 · 594 points · 8 lots</footer>
+
+<script>
+let lot = 'electricite';
+let fichierB64 = null;
+let fichierType = null;
+let fichierNom = null;
+let dernierRes = null;
+let filtreCourant = 'tous';
+
+const STATS_LOT = {
+  electricite:{t:210,c:103,m:96,mi:11},
+  plomberie:{t:64,c:35,m:26,mi:3},
+  cvc:{t:50,c:24,m:24,mi:2},
+  securite_incendie:{t:128,c:75,m:24,mi:0},
+  courant_faible:{t:47,c:18,m:26,mi:3},
+  ascenseur:{t:38,c:30,m:8,mi:0},
+  fd_c17205:{t:37,c:24,m:11,mi:2},
+  reception:{t:20,c:13,m:7,mi:0}
+};
+
+function changerLot(el) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  lot = el.dataset.lot;
+  const s = STATS_LOT[lot] || {t:0,c:0,m:0,mi:0};
+  document.getElementById('sb-t').textContent = s.t;
+  document.getElementById('sb-c').textContent = s.c;
+  document.getElementById('sb-m').textContent = s.m;
+  document.getElementById('sb-mi').textContent = s.mi;
+  check();
+}
+
+function check() {
+  const ok = document.getElementById('type-bat').value &&
+             document.getElementById('type-doc').value &&
+             fichierB64;
+  document.getElementById('btn-analyser').disabled = !ok;
+}
+
+function dragOn(e) { e.preventDefault(); document.getElementById('upload-zone').classList.add('over'); }
+function dragOff(e) { document.getElementById('upload-zone').classList.remove('over'); }
+function drop(e) { e.preventDefault(); dragOff(e); const f = e.dataTransfer.files[0]; if(f) traiter(f); }
+function onFile(e) { const f = e.target.files[0]; if(f) traiter(f); }
+
+function traiter(f) {
+  fichierNom = f.name;
+  fichierType = f.type || 'application/pdf';
+  document.getElementById('file-nm').textContent = f.name;
+  document.getElementById('file-sz').textContent = (f.size/1024).toFixed(0) + ' Ko';
+  document.getElementById('file-sel').style.display = 'flex';
+  const r = new FileReader();
+  r.onload = e => { fichierB64 = e.target.result.split(',')[1]; check(); };
+  r.readAsDataURL(f);
+}
+
+async function lancer() {
+  const typeBat = document.getElementById('type-bat').value;
+  const typeDoc = document.getElementById('type-doc').value;
+  const projet = document.getElementById('projet').value || 'Projet';
+  const controleur = document.getElementById('controleur').value || 'ASSISTEC';
+
+  cacherErr();
+  showLoader('Envoi du document au serveur...');
+
+  try {
+    showLoader('Analyse en cours par Claude AI...');
+
+    const resp = await fetch('/api/analyser', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        lot: lot,
+        type_batiment: typeBat,
+        type_document: typeDoc,
+        projet: projet,
+        controleur: controleur,
+        fichier_b64: fichierB64,
+        fichier_type: fichierType
+      })
+    });
+
+    if (!resp.ok) {
+      const err = await resp.json();
+      throw new Error(err.error?.message || err.error || 'Erreur serveur ' + resp.status);
+    }
+
+    const data = await resp.json();
+    const texte = data.content.map(b => b.text || '').join('');
+
+    let res;
+    try {
+      const propre = texte.replace(/```json\n?|\n?```/g,'').trim();
+      res = JSON.parse(propre);
+    } catch(e) {
+      throw new Error('Reponse Claude non analysable. Reessayez.');
+    }
+
+    hideLoader();
+    afficherRapport(res, projet, lot, typeDoc, typeBat, controleur);
+
+  } catch(err) {
+    hideLoader();
+    afficherErr('Erreur : ' + err.message);
+  }
+}
+
+function afficherRapport(res, projet, lot, typeDoc, typeBat, ctrl) {
+  dernierRes = {res, projet, lot, typeDoc, typeBat, ctrl};
+  const reserves = res.reserves || [];
+  document.getElementById('r-c').textContent = reserves.filter(r=>r.severite==='CRITIQUE').length;
+  document.getElementById('r-m').textContent = reserves.filter(r=>r.severite==='MAJEURE').length;
+  document.getElementById('r-mi').textContent = reserves.filter(r=>r.severite==='MINEURE').length;
+  document.getElementById('r-title').textContent = `Rapport — ${lot} / ${typeDoc}`;
+  document.getElementById('r-meta').textContent = `${projet} · ${typeBat} · ${new Date().toLocaleDateString('fr-FR')} · ${ctrl}`;
+  filtreCourant = 'tous';
+  rendreListe(reserves, res.resume || '');
+  document.getElementById('rapport').classList.add('on');
+  document.getElementById('rapport').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function rendreListe(reserves, resume) {
+  const liste = document.getElementById('reserves-list');
+  liste.innerHTML = '';
+
+  if (reserves.length === 0) {
+    liste.innerHTML = `<div class="vide"><div class="vide-icon">✅</div><div class="vide-titre">Aucune reserve detectee</div><div class="vide-txt">${resume || 'Le document est conforme aux points verifies.'}</div></div>`;
+    return;
+  }
+
+  const ordre = {CRITIQUE:0,MAJEURE:1,MINEURE:2};
+  const tries = [...reserves].sort((a,b) => (ordre[a.severite]||3)-(ordre[b.severite]||3));
+  const filtrees = filtreCourant === 'tous' ? tries : tries.filter(r => r.severite === filtreCourant);
+
+  if (resume) liste.innerHTML = `<div class="synthese"><strong style="color:var(--nuit)">Synthese :</strong> ${resume}</div>`;
+
+  const ul = document.createElement('div');
+  ul.className = 'reserves-list';
+  filtrees.forEach((r, i) => {
+    const d = document.createElement('div');
+    d.className = 'reserve';
+    d.innerHTML = `
+      <div>
+        <span class="rsev ${r.severite}">${r.severite}</span>
+        <div class="rnum">#${String(i+1).padStart(2,'0')}</div>
+      </div>
+      <div>
+        <div class="rpoint">${r.point || ''}</div>
+        <div class="robs">${r.observation || ''}</div>
+        ${r.element_concerne ? `<div class="relem">📍 ${r.element_concerne}</div>` : ''}
+      </div>
+      <span class="rnorme">${r.norme || ''}</span>`;
+    ul.appendChild(d);
+  });
+  liste.appendChild(ul);
+  if (!filtrees.length && filtreCourant !== 'tous') {
+    liste.innerHTML += `<div style="padding:2rem;text-align:center;color:var(--texte-gris);font-size:13px;">Aucune reserve de severite ${filtreCourant}</div>`;
+  }
+}
+
+function filtrer(f) {
+  filtreCourant = f;
+  document.querySelectorAll('.filtre').forEach(b => b.className = 'filtre');
+  event.target.classList.add(f==='tous'?'fa':f==='CRITIQUE'?'fc':f==='MAJEURE'?'fm':'fmi');
+  if (dernierRes) rendreListe(dernierRes.res.reserves||[], dernierRes.res.resume||'');
+}
+
+function exporter(fmt) {
+  if (!dernierRes) return;
+  const {res, projet, lot, typeDoc, ctrl} = dernierRes;
+  const reserves = res.reserves || [];
+  const date = new Date().toISOString().slice(0,10);
+  if (fmt === 'json') {
+    const b = new Blob([JSON.stringify({projet,lot,typeDoc,date,controleur:ctrl,...res},null,2)],{type:'application/json'});
+    dl(b, `Rapport_ASSISTEC_${lot}_${date}.json`);
+    return;
+  }
+  let txt = `RAPPORT DE RESERVES - ASSISTEC\n${'='.repeat(50)}\n`;
+  txt += `Projet: ${projet}\nLot: ${lot}\nDocument: ${typeDoc}\nDate: ${date}\nControleur: ${ctrl}\n${'='.repeat(50)}\n\n`;
+  if (res.resume) txt += `SYNTHESE:\n${res.resume}\n\n`;
+  txt += `RESERVES (${reserves.length}):\n${'-'.repeat(40)}\n\n`;
+  reserves.forEach((r,i) => {
+    txt += `${i+1}. [${r.severite}] ${r.point}\n   Norme: ${r.norme||'N/A'}\n   Observation: ${r.observation}\n`;
+    if (r.element_concerne) txt += `   Element: ${r.element_concerne}\n`;
+    txt += '\n';
+  });
+  const b = new Blob([txt],{type:'text/plain;charset=utf-8'});
+  dl(b, `Rapport_ASSISTEC_${lot}_${date}.txt`);
+}
+
+function dl(blob, nom) {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = nom; a.click();
+  URL.revokeObjectURL(url);
+}
+
+function nouveau() {
+  document.getElementById('rapport').classList.remove('on');
+  document.getElementById('file-sel').style.display = 'none';
+  document.getElementById('file-input').value = '';
+  fichierB64 = null; fichierType = null; dernierRes = null;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function showLoader(txt) {
+  document.getElementById('loader-txt').textContent = txt;
+  document.getElementById('loader').classList.add('on');
+  document.getElementById('rapport').classList.remove('on');
+  document.getElementById('btn-analyser').disabled = true;
+}
+function hideLoader() {
+  document.getElementById('loader').classList.remove('on');
+  document.getElementById('btn-analyser').disabled = false;
+}
+function afficherErr(msg) {
+  const e = document.getElementById('erreur');
+  e.textContent = msg; e.classList.add('on');
+}
+function cacherErr() { document.getElementById('erreur').classList.remove('on'); }
+
+// Vérifier la version au démarrage
+window.onload = () => {
+  fetch('/api/version').then(r=>r.json()).then(info => {
+    const tag = document.getElementById('vtag');
+    if (tag) tag.textContent = `v4.0 · ${info.points_total||594} pts · V${info.version||12}`;
+  }).catch(()=>{});
+};
+
+// PWA
+let deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferredPrompt = e; });
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(()=>{}));
+}
+</script>
+</body>
+</html>
