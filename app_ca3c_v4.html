@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CA3C — Contrôle Technique v4</title>
-<meta name="application-name" content="CA3C Contrôle">
+<title>ASSISTEC — Contrôle Technique v4</title>
+<meta name="application-name" content="ASSISTEC Contrôle">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="CA3C">
+<meta name="apple-mobile-web-app-title" content="ASSISTEC">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#0D1B2A">
 <link rel="manifest" href="manifest.json">
@@ -608,7 +608,7 @@ footer {
 <!-- ══ HEADER ══ -->
 <header>
   <div class="logo">
-    <span class="logo-badge">CA3C</span>
+    <span class="logo-badge">ASSISTEC</span>
     <div>
       <span class="logo-name">Contrôle Technique</span>
       <span class="logo-sub">— Analyse IA des documents</span>
@@ -800,7 +800,7 @@ footer {
     </div>
     <div class="field">
       <label>Bureau de contrôle / Contrôleur</label>
-      <input type="text" id="nom-controleur" placeholder="Ex : CA3C — Ing. DIALLO">
+      <input type="text" id="nom-controleur" placeholder="Ex : ASSISTEC — Ing. DIALLO">
     </div>
   </div>
 
@@ -917,7 +917,7 @@ footer {
 </main>
 
 <footer>
-  CA3C — Contrôle Technique · Version 4.0 · Matrice V12 · 594 points de contrôle · 8 lots techniques
+  ASSISTEC — Contrôle Technique · Version 4.0 · Matrice V12 · 594 points de contrôle · 8 lots techniques
 </footer>
 
 <script>
@@ -947,10 +947,10 @@ const LOT_NOMS = {
 };
 
 // ════════════════════════════════════════════════════════════════
-// CONTEXTE TERRAIN CA3C (retours d'expérience terrain)
+// CONTEXTE TERRAIN ASSISTEC (retours d'expérience terrain)
 // ════════════════════════════════════════════════════════════════
 const CONTEXTE_TERRAIN = {
-  electricite: `RETOURS TERRAIN CA3C (380 observations) :
+  electricite: `RETOURS TERRAIN ASSISTEC (380 observations) :
 • Prise de terre : valeur souvent > 10 Ω GE, piquets mal enfoncés (< 2m), regards absents
 • Coffrets : schémas absents, calibres incohérents, sélectivité non assurée
 • DDR 30mA absents en amont circuits terminaux, max 8 circuits par DDR dépassé
@@ -958,7 +958,7 @@ const CONTEXTE_TERRAIN = {
 • Groupe électrogène : non raccordé à la terre, inverseur au sol, bac à sable absent
 • IB non calculé circuit par circuit, Ku/Ks/Ke absents ou non justifiés`,
 
-  plomberie: `RETOURS TERRAIN CA3C (232 observations) :
+  plomberie: `RETOURS TERRAIN ASSISTEC (232 observations) :
 • Canalisations sous-dimensionnées, surpresseur non conforme aux plans
 • Tests de pression (1,5× pression de service pendant 30 min) jamais réalisés avant carrelage
 • Chutes EU/EV non ventilées, séparation EU/EV non assurée
@@ -966,7 +966,7 @@ const CONTEXTE_TERRAIN = {
 • Mitigeurs thermostatiques absents, bouclage ECS non prévu ou non équilibré
 • Crapaudines EP absentes, évacuation terrasses omise sur plans`,
 
-  cvc: `RETOURS TERRAIN CA3C (54 observations) :
+  cvc: `RETOURS TERRAIN ASSISTEC (54 observations) :
 • Bilan thermique absent ou global sans détail par local, données météo non locales
 • Données météo de Paris utilisées pour Dakar (T° base été 36°C, HR 75%)
 • Fluides frigorigènes non conformes F-Gaz (R410A en cours de phase out)
@@ -974,7 +974,7 @@ const CONTEXTE_TERRAIN = {
 • Isolation armaflex incomplète, fuites condensats (siphon absent)
 • Extracteurs 15 m³/h dans toilettes au lieu de 30 m³/h minimum`,
 
-  securite_incendie: `RETOURS TERRAIN CA3C (68 observations) :
+  securite_incendie: `RETOURS TERRAIN ASSISTEC (68 observations) :
 • Détecteurs optiques en parking et cuisine (doivent être thermiques → faux positifs)
 • Désenfumage parking absent, amenée d'air de compensation absente
 • Câblage CR1 non prévu sur boucles détection et commandes DAS
@@ -982,7 +982,7 @@ const CONTEXTE_TERRAIN = {
 • Rideau de scène absent ou non certifié EI 60 (type L)
 • Colonnes sèches absentes dès SS2 en habitation`,
 
-  courant_faible: `RETOURS TERRAIN CA3C (21 observations) :
+  courant_faible: `RETOURS TERRAIN ASSISTEC (21 observations) :
 • Fiches techniques caméras absentes, résolution non justifiée
 • Budget PoE total du switch non calculé (caméras sous-alimentées)
 • Durée de rétention NVR non calculée
@@ -990,7 +990,7 @@ const CONTEXTE_TERRAIN = {
 • Badges RFID 125 kHz retenus (copiables facilement)
 • Protocole GTB non précisé, passerelles entre systèmes absentes`,
 
-  ascenseur: `RETOURS TERRAIN CA3C (9 observations) :
+  ascenseur: `RETOURS TERRAIN ASSISTEC (9 observations) :
 • Manœuvre pompiers Phase 2 absente ou non conforme NF EN 81-72:2020
 • UCMP absent (exigence NF EN 81-20:2020 souvent méconnue)
 • Rappel au niveau d'évacuation non asservi au SSI
@@ -998,14 +998,14 @@ const CONTEXTE_TERRAIN = {
 • Certificats composants de sécurité selon NF EN 81-50:2020 absents
 • ARD (évacuation automatique sur coupure) non prévu dans les ERP`,
 
-  fd_c17205: `RETOURS TERRAIN CA3C — FD C17-205 :
+  fd_c17205: `RETOURS TERRAIN ASSISTEC — FD C17-205 :
 • Calcul IB absent ou non conforme aux Tableaux 2-3 du FD C17-205
 • Section S retenue non justifiée (S = MAX(Sa, Sb, Sc, Sd) non appliqué)
 • Longueurs L et ℓ confondues dans les formules de chute de tension
 • Résistivité ρ incorrecte selon matériau (Cu vs Al) et type de protection
 • UCMP non mentionné dans les installations extérieures`,
 
-  reception: `RETOURS TERRAIN CA3C — RÉCEPTION :
+  reception: `RETOURS TERRAIN ASSISTEC — RÉCEPTION :
 • PV de mesure de résistance de terre absents
 • Essais DDR non réalisés avant réception
 • Schémas de recollement jamais fournis
@@ -1220,82 +1220,140 @@ function verifierFormulaire() {
 // ════════════════════════════════════════════════════════════════
 // ANALYSE
 // ════════════════════════════════════════════════════════════════
+
+// Sélectionner les points les plus pertinents selon le type de document
+function selectionnerPointsPertinents(points, typeDoc, maxPoints = 60) {
+  if (points.length <= maxPoints) return points;
+
+  // Mots-clés par type de document pour prioriser les points pertinents
+  const motsClesPriorite = {
+    'bilan_puissance':        ['bilan', 'puissance', 'Ke', 'Ks', 'Ku', 'IB', 'GE', 'groupe', 'électrogène', 'simultanéité', 'extension'],
+    'note_calcul_elec':       ['calcul', 'section', 'câble', 'chute', 'tension', 'IB', 'courant', 'impédance', 'Ib', 'Iz'],
+    'schema_unifilaire':      ['schéma', 'unifilaire', 'TGBT', 'disjoncteur', 'DDR', 'sélectivité', 'coffret', 'calibre'],
+    'schema_coffret':         ['coffret', 'disjoncteur', 'DDR', 'sélectivité', 'schéma', 'calibre', 'repérage'],
+    'plan_implantation_elec': ['plan', 'implantation', 'BAES', 'prise', 'éclairage', 'repérage', 'cheminement'],
+    'plan_mise_terre':        ['terre', 'prise de terre', 'mise à la terre', 'piquet', 'regard', 'équipotentielle'],
+    'bilan_thermique':        ['thermique', 'bilan', 'charge', 'frigorigène', 'Dakar', 'météo', 'COP', 'puissance'],
+    'note_calcul_vmc':        ['VMC', 'débit', 'aéraulique', 'extraction', 'insufflation', 'gaine', 'bouche'],
+    'plan_cvc':               ['plan', 'CVC', 'unité', 'réseau', 'gaine', 'implantation', 'climatisation'],
+    'notice_securite':        ['notice', 'sécurité', 'classification', 'ERP', 'IGH', 'évacuation', 'compartimentage'],
+    'plan_detection':         ['détection', 'détecteur', 'centrale', 'boucle', 'SSI', 'alarme'],
+    'plan_desenfumage':       ['désenfumage', 'extracteur', 'amenée', 'ouvrant', 'ZF', 'commande'],
+    'dossier_ssi':            ['SSI', 'CMSI', 'DAS', 'matrice', 'concordance', 'ZD', 'ZS', 'catégorie'],
+    'plan_videosurveillance': ['caméra', 'CCTV', 'NVR', 'PoE', 'résolution', 'couverture', 'angle'],
+    'plan_controle_acces':    ['contrôle', 'accès', 'badge', 'lecteur', 'déverrouillage', 'incendie'],
+    'dossier_ascenseur':      ['ascenseur', 'UCMP', 'pompiers', 'phase', 'fosse', 'survol', 'ARD'],
+    'note_calcul_plomb':      ['débit', 'simultané', 'pression', 'ECS', 'EU', 'EV', 'chute', 'DN'],
+    'plan_alimentation_eau':  ['eau', 'alimentation', 'EF', 'ECS', 'bouclage', 'bras', 'colonne'],
+    'plan_evacuation':        ['évacuation', 'EU', 'EV', 'EP', 'chute', 'collecteur', 'siphon']
+  };
+
+  const motsCles = motsClesPriorite[typeDoc] || [];
+
+  // Score chaque point selon la pertinence
+  const scores = points.map(p => {
+    const texte = `${p.p} ${p.o} ${p.sec || ''}`.toLowerCase();
+    let score = 0;
+    // Prioriser les CRITIQUE
+    if (p.s === 'CRITIQUE') score += 3;
+    else if (p.s === 'MAJEURE') score += 1;
+    // Bonus si mots-clés trouvés
+    motsCles.forEach(mc => {
+      if (texte.includes(mc.toLowerCase())) score += 2;
+    });
+    return score;
+  });
+
+  // Trier par score décroissant, garder les maxPoints premiers
+  const indices = scores.map((s, i) => ({s, i}))
+                        .sort((a, b) => b.s - a.s)
+                        .slice(0, maxPoints)
+                        .map(x => x.i)
+                        .sort((a, b) => a - b); // Remettre dans l'ordre original
+
+  return indices.map(i => points[i]);
+}
+
 async function lancerAnalyse() {
   const apiKey = document.getElementById('api-key').value.trim();
   const typeBat = document.getElementById('type-batiment').value;
   const typeDoc = document.getElementById('type-document').value;
   const nomProjet = document.getElementById('nom-projet').value || 'Projet sans nom';
-  const controleur = document.getElementById('nom-controleur').value || 'CA3C';
+  const controleur = document.getElementById('nom-controleur').value || 'ASSISTEC';
 
   cacherErreur();
-  afficherLoader('Préparation de la matrice…');
   actualiserProg(3);
 
   // Obtenir les points de contrôle du lot actuel
-  const points = obtenirPointsLot(lotActuel);
+  const tousPoints = obtenirPointsLot(lotActuel);
   const contexte = CONTEXTE_TERRAIN[lotActuel] || '';
   const nomLot = LOT_NOMS[lotActuel] || lotActuel;
+
+  // ── CORRECTION CLÉ : limiter le nombre de points envoyés ──
+  // On sélectionne au max 60 points les plus pertinents pour le type de doc
+  afficherLoader(`Sélection des points pertinents (${tousPoints.length} points disponibles)…`);
+  const points = selectionnerPointsPertinents(tousPoints, typeDoc, 60);
   
-  // Construire la liste des points pour le prompt (format compact)
-  const pointsPrompt = points.map((p, i) => 
-    `${i+1}. [${p.s}] ${p.p} | Norme: ${p.n || 'N/A'} | Obs. type: ${p.o}`
-  ).join('\n');
+  // Format compact : on raccourcit les observations à 120 caractères max
+  const pointsPrompt = points.map((p, i) => {
+    const obsCourtee = p.o.length > 120 ? p.o.substring(0, 117) + '…' : p.o;
+    return `${i+1}.[${p.s}] ${p.p} | ${p.n || 'N/A'} | ${obsCourtee}`;
+  }).join('\n');
 
-  const systemPrompt = `Tu es un expert en contrôle technique de bâtiments pour le bureau CA3C au Sénégal.
-Tu analyses des documents techniques et génères des réserves de contrôle basées sur la matrice fournie.
+  const systemPrompt = `Tu es un expert contrôle technique bâtiment (bureau ASSISTEC, Sénégal). 
+LOT: ${nomLot} | BÂTIMENT: ${typeBat} | DOCUMENT: ${typeDoc}
 
-LOT : ${nomLot}
-TYPE DE BÂTIMENT : ${typeBat}
-TYPE DE DOCUMENT : ${typeDoc}
-
-MATRICE DE CONTRÔLE (${points.length} points) :
+MATRICE (${points.length} points sélectionnés sur ${tousPoints.length}) :
 ${pointsPrompt}
 
 ${contexte}
 
-INSTRUCTIONS STRICTES :
-1. Lis le document fourni attentivement
-2. Pour chaque point de la matrice, vérifie s'il est conforme ou non-conforme dans ce document précis
-3. Ne génère une réserve QUE si tu détectes une non-conformité réelle ou une information manquante
-4. Observations : courtes (max 2 phrases), directes, professionnelles. Dis QUOI corriger.
-5. Réponds UNIQUEMENT en JSON valide
-6. Conserve la sévérité de la matrice (CRITIQUE/MAJEURE/MINEURE)
+RÈGLES :
+- Vérifie chaque point de la matrice sur le document fourni
+- Réserve UNIQUEMENT si non-conformité réelle ou donnée manquante
+- Observations courtes (1-2 phrases max), directes, professionnelles
+- Réponds UNIQUEMENT en JSON valide, aucun texte avant ou après
 
-FORMAT JSON OBLIGATOIRE :
-{
-  "reserves": [
-    {
-      "point": "nom du point",
-      "severite": "CRITIQUE" | "MAJEURE" | "MINEURE",
-      "norme": "référence normative",
-      "observation": "observation précise basée sur le document (max 2 phrases)",
-      "element_concerne": "élément précis du document (ligne, coffret, zone, etc.)"
-    }
-  ],
-  "points_conformes": ["liste des points vérifiés et conformes"],
-  "resume": "Synthèse en 2 phrases de l'état général du document"
-}`;
+FORMAT JSON :
+{"reserves":[{"point":"...","severite":"CRITIQUE|MAJEURE|MINEURE","norme":"...","observation":"...","element_concerne":"..."}],"points_conformes":["..."],"resume":"Synthèse 2 phrases"}`;
+
+  // Vérification taille approximative du prompt (en caractères)
+  const taillePrompt = systemPrompt.length;
+  if (taillePrompt > 80000) {
+    // Réduire encore si nécessaire
+    afficherErreur(`⚠️ Prompt encore trop large (${Math.round(taillePrompt/1000)}k car). Réduction supplémentaire appliquée.`);
+  }
 
   try {
-    actualiserLoader('Envoi du document à Claude AI…');
-
     const estPDF = fichierActuel.type === 'application/pdf';
     const estImage = fichierActuel.type.startsWith('image/');
+    const estExcel = fichierActuel.name.match(/\.(xlsx|xls)$/i);
+
+    // Vérification taille fichier PDF (limite ~20 Mo encodé en base64)
+    if (estPDF && fichierBase64 && fichierBase64.length > 15000000) {
+      throw new Error(`PDF trop volumineux (${Math.round(fichierBase64.length / 1000000 * 0.75)} Mo). Limite : ~11 Mo. Compressez le PDF ou utilisez une version allégée.`);
+    }
 
     let contenuMessage;
     if (estPDF) {
+      actualiserLoader('Envoi du PDF à Claude AI…');
       contenuMessage = [
         { type: "document", source: { type: "base64", media_type: "application/pdf", data: fichierBase64 } },
-        { type: "text", text: `Analyse ce document de type "${typeDoc}" pour le lot "${nomLot}" du projet "${nomProjet}". Contrôleur : ${controleur}. Applique la matrice et génère les réserves en JSON.` }
+        { type: "text", text: `Analyse ce document "${typeDoc}" — lot "${nomLot}" — projet "${nomProjet}" — contrôleur : ${controleur}. Applique la matrice. Réponds uniquement en JSON.` }
       ];
     } else if (estImage) {
+      actualiserLoader('Envoi de l\'image à Claude AI…');
       contenuMessage = [
         { type: "image", source: { type: "base64", media_type: fichierActuel.type, data: fichierBase64 } },
-        { type: "text", text: `Analyse ce plan/schéma de type "${typeDoc}" pour le lot "${nomLot}" du projet "${nomProjet}". Applique la matrice et génère les réserves en JSON.` }
+        { type: "text", text: `Analyse ce plan/schéma "${typeDoc}" — lot "${nomLot}" — projet "${nomProjet}". Applique la matrice. Réponds uniquement en JSON.` }
       ];
+    } else if (estExcel) {
+      // Excel : impossible à analyser directement en base64 par l'API
+      throw new Error(`Les fichiers Excel (.xlsx/.xls) ne peuvent pas être analysés directement. Exportez votre fichier en PDF ou en image (capture d'écran) puis réessayez.`);
     } else {
+      actualiserLoader('Envoi du document à Claude AI…');
       contenuMessage = [
-        { type: "text", text: `Le fichier "${fichierActuel.name}" (${typeDoc}) a été fourni pour le lot "${nomLot}" du projet "${nomProjet}". Analyse les données et génère les réserves probables en JSON basées sur la matrice.` }
+        { type: "text", text: `Fichier : "${fichierActuel.name}" | Type : ${typeDoc} | Lot : ${nomLot} | Projet : ${nomProjet}. Génère les réserves probables en JSON sur la base de la matrice fournie.` }
       ];
     }
 
@@ -1311,15 +1369,25 @@ FORMAT JSON OBLIGATOIRE :
       },
       body: JSON.stringify({
         model: 'claude-sonnet-4-6',
-        max_tokens: 4000,
+        max_tokens: 6000,
         system: systemPrompt,
         messages: [{ role: 'user', content: contenuMessage }]
       })
     });
 
     if (!response.ok) {
-      const err = await response.json();
-      throw new Error(err.error?.message || `Erreur API: ${response.status}`);
+      let msgErreur = `Erreur API HTTP ${response.status}`;
+      try {
+        const err = await response.json();
+        msgErreur = err.error?.message || msgErreur;
+        // Messages d'erreur lisibles pour les cas courants
+        if (response.status === 401) msgErreur = 'Clé API invalide ou expirée. Vérifiez votre clé sur console.anthropic.com';
+        else if (response.status === 413 || msgErreur.includes('too large') || msgErreur.includes('too long')) {
+          msgErreur = 'Document trop volumineux pour l\'API. Réduisez le PDF (compression, moins de pages) et réessayez.';
+        } else if (response.status === 429) msgErreur = 'Limite de requêtes atteinte. Attendez quelques secondes et réessayez.';
+        else if (response.status === 500) msgErreur = 'Erreur serveur Anthropic. Réessayez dans un moment.';
+      } catch(_) {}
+      throw new Error(msgErreur);
     }
 
     const data = await response.json();
@@ -1327,10 +1395,20 @@ FORMAT JSON OBLIGATOIRE :
 
     let resultat;
     try {
-      const jsonPropre = texte.replace(/```json\n?|\n?```/g,'').trim();
+      // Nettoyage robuste : retirer blocs ```json ... ``` ou ``` ... ```
+      let jsonPropre = texte.trim();
+      jsonPropre = jsonPropre.replace(/^```json\s*/i, '').replace(/\s*```$/i, '');
+      jsonPropre = jsonPropre.replace(/^```\s*/i, '').replace(/\s*```$/i, '');
       resultat = JSON.parse(jsonPropre);
     } catch(e) {
-      throw new Error("Réponse Claude non analysable. Réessayez.");
+      // Tentative de récupération : chercher le premier { ... }
+      const match = texte.match(/\{[\s\S]*\}/);
+      if (match) {
+        try { resultat = JSON.parse(match[0]); }
+        catch(_) { throw new Error(`Réponse Claude non analysable (JSON invalide). Détail : ${e.message}`); }
+      } else {
+        throw new Error(`Réponse Claude non analysable. Détail : ${e.message}\n\nDébut réponse : ${texte.substring(0, 200)}`);
+      }
     }
 
     cacherLoader();
@@ -1440,11 +1518,11 @@ function exporterRapport(format) {
 
   if (format === 'json') {
     const blob = new Blob([JSON.stringify({ projet, lot, typeDoc, date, controleur, ...resultat }, null, 2)], {type:'application/json'});
-    telecharger(blob, `Rapport_CA3C_${lot.replace(/\s/g,'_')}_${dateISO}.json`);
+    telecharger(blob, `Rapport_ASSISTEC_${lot.replace(/\s/g,'_')}_${dateISO}.json`);
     return;
   }
 
-  let txt = `RAPPORT DE RÉSERVES — CA3C\n${'═'.repeat(60)}\n`;
+  let txt = `RAPPORT DE RÉSERVES — ASSISTEC\n${'═'.repeat(60)}\n`;
   txt += `Projet    : ${projet}\n`;
   txt += `Lot       : ${lot}\n`;
   txt += `Document  : ${typeDoc}\n`;
@@ -1465,7 +1543,7 @@ function exporterRapport(format) {
     resultat.points_conformes.forEach((p,i) => txt += `${i+1}. ${p}\n`);
   }
   const blob = new Blob([txt], {type:'text/plain;charset=utf-8'});
-  telecharger(blob, `Rapport_CA3C_${lot.replace(/\s/g,'_')}_${dateISO}.txt`);
+  telecharger(blob, `Rapport_ASSISTEC_${lot.replace(/\s/g,'_')}_${dateISO}.txt`);
 }
 
 function telecharger(blob, nom) {
@@ -1522,7 +1600,7 @@ function cacherErreur() { document.getElementById('erreur').classList.remove('vi
 function sauvegarderCle() {
   const cle = document.getElementById('api-key').value.trim();
   if (cle) {
-    localStorage.setItem('ca3c_api_key', cle);
+    localStorage.setItem('assistec_api_key', cle);
     afficherErreur('✅ Clé API sauvegardée.', true);
     setTimeout(cacherErreur, 2000);
   }
@@ -1557,7 +1635,7 @@ if ('serviceWorker' in navigator) {
 // INITIALISATION
 // ════════════════════════════════════════════════════════════════
 window.onload = () => {
-  const cle = localStorage.getItem('ca3c_api_key');
+  const cle = localStorage.getItem('assistec_api_key');
   if (cle) document.getElementById('api-key').value = cle;
   
   // Charger la matrice complète
